@@ -1,0 +1,158 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NIxera | Seu mundo, suas possibilidades</title>
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #080e1b;
+      color: white;
+    }
+    header {
+      height: 75px;
+      padding: 0 7%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: #0d1728;
+      border-bottom: 1px solid #24344c;
+    }
+    .logo {
+      font-size: 28px;
+      font-weight: bold;
+      color: white;
+    }
+    .logo span { color: #318bff; }
+    nav { display: flex; gap: 22px; }
+    nav a {
+      color: #c5d1e2;
+      text-decoration: none;
+      font-size: 14px;
+    }
+    .hero {
+      padding: 110px 8%;
+      background: radial-gradient(circle at 80% 30%, #12396a, #080e1b 60%);
+    }
+    .tag { color: #318bff; font-weight: bold; }
+    h1 { font-size: clamp(40px, 6vw, 68px); }
+    h1 span { color: #318bff; }
+    .hero p {
+      color: #aab9cc;
+      line-height: 1.8;
+      max-width: 550px;
+    }
+    button {
+      padding: 13px 22px;
+      background: #1675ec;
+      color: white;
+      border: 0;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .sections { padding: 55px 8%; }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+      gap: 18px;
+    }
+    .card {
+      padding: 25px;
+      border: 1px solid #233651;
+      background: #111d30;
+      border-radius: 12px;
+    }
+    .card h3 { color: #65a9ff; }
+    .card p { color: #aab9cc; font-size: 14px; }
+    #connection {
+      color: #aab9cc;
+      font-size: 13px;
+      margin-top: 18px;
+    }
+    footer {
+      padding: 30px 8%;
+      border-top: 1px solid #24344c;
+      color: #aab9cc;
+    }
+    @media(max-width:650px) {
+      nav { display: none; }
+      .hero { padding: 75px 7%; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">NI<span>xera</span></div>
+  <nav>
+    <a href="#">Início</a>
+    <a href="#comunidade">Comunidade</a>
+    <a href="#loja">Loja</a>
+    <a href="#jogos">Jogos</a>
+    <a href="#cursos">Cursos</a>
+  </nav>
+  <button onclick="alert('Em breve!')">Entrar</button>
+</header>
+
+<section class="hero">
+  <div class="tag">BEM-VINDO À NIXERA</div>
+  <h1>Seu mundo.<br><span>Suas possibilidades.</span></h1>
+  <p>
+    Conecte-se, descubra novidades, compartilhe experiências
+    e encontre tudo em um só lugar.
+  </p>
+  <button onclick="document.querySelector('#explorar').scrollIntoView({behavior:'smooth'})">
+    Explorar plataforma
+  </button>
+  <div id="connection">Verificando conexão...</div>
+</section>
+
+<section class="sections" id="explorar">
+  <h2>Explore a NIxera</h2>
+  <div class="grid">
+    <div class="card" id="comunidade">
+      <h3>Comunidade</h3>
+      <p>Compartilhe ideias e conheça pessoas.</p>
+    </div>
+    <div class="card" id="loja">
+      <h3>Loja virtual</h3>
+      <p>Descubra produtos e ofertas.</p>
+    </div>
+    <div class="card" id="jogos">
+      <h3>Jogos</h3>
+      <p>Explore jogos da comunidade.</p>
+    </div>
+    <div class="card">
+      <h3>Notícias</h3>
+      <p>Acompanhe novidades e tendências.</p>
+    </div>
+    <div class="card" id="cursos">
+      <h3>Cursos</h3>
+      <p>Aprenda e compartilhe conhecimento.</p>
+    </div>
+    <div class="card">
+      <h3>Serviços</h3>
+      <p>Descubra serviços e oportunidades.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  NIxera © 2026 — Um universo de possibilidades.
+</footer>
+
+<script>
+  const SUPABASE_URL = "https://oeiktcmpjyhfhmskbdgp.supabase.co";
+
+  // A conexão será configurada na próxima etapa.
+  document.getElementById("connection").textContent =
+    "NIxera: interface inicial carregada.";
+</script>
+
+</body>
+</html>
