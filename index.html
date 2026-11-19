@@ -419,25 +419,21 @@ footer {
 
 const SUPABASE_URL = "https://oeiktcmpjyhfhmskbdgp.supabase.co";
 
-// COLE AQUI SUA CHAVE PUBLICÁVEL DO SUPABASE
 const SUPABASE_KEY = "sb_publishable__fOCEETlkYEjvT5agdartg_5JGWREbZ";
+
 const connection = document.getElementById("connection");
 
-let supabaseClient;
+let supabaseClient = null;
 
-if (
-  window.supabase &&
-  SUPABASE_KEY !== "sb_publishable__fOCEETlkYEjvT5agdartg_5JGWREbZ" &&
-  SUPABASE_KEY.trim() !== ""
-) {
+if (window.supabase && SUPABASE_URL && SUPABASE_KEY) {
   supabaseClient = window.supabase.createClient(
     SUPABASE_URL,
     SUPABASE_KEY
   );
 
-  connection.textContent = "NIxera: conexão configurada.";
+  connection.textContent = "NIxera: conexão configurada!";
 } else {
-  connection.textContent = "NIxera: configure sua chave do Supabase.";
+  connection.textContent = "Erro ao conectar ao Supabase.";
 }
 
 // ====================================
