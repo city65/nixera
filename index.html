@@ -444,8 +444,10 @@ if (
 // FUNÇÕES DA INTERFACE
 // ====================================
 
-function openAuth() {
-  document.getElementById("authArea").style.display = "block";
+window.openAuth = function() {
+  const authArea = document.getElementById("authArea");
+
+  authArea.style.display = "block";
 
   if (currentUser) {
     showProfile(currentUser);
@@ -453,10 +455,10 @@ function openAuth() {
     showLogin();
   }
 
-  document.getElementById("authArea").scrollIntoView({
+  authArea.scrollIntoView({
     behavior: "smooth"
   });
-}
+};
 
 function showLogin() {
   document.getElementById("loginForm").style.display = "block";
