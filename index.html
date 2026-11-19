@@ -190,6 +190,54 @@ footer {
   .hero { padding: 75px 7%; }
   .auth-box { padding: 22px; }
 }
+
+
+.profile-card {
+  text-align: center;
+  padding: 25px 10px;
+}
+
+.profile-avatar {
+  width: 100px;
+  height: 100px;
+  margin: 0 auto 18px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg,#1675ec,#12396a);
+  border: 3px solid #318bff;
+  font-size: 38px;
+  font-weight: bold;
+  color: white;
+}
+
+.profile-card p {
+  color: #aab9cc;
+  overflow-wrap: anywhere;
+}
+
+.secondary-button {
+  background: #263750;
+  margin-left: 5px;
+}
+
+#editProfileForm {
+  margin-top: 25px;
+  border-top: 1px solid #30445f;
+  padding-top: 20px;
+}
+
+#editProfileForm input {
+  width: 100%;
+  padding: 13px;
+  margin: 8px 0 15px;
+  background: #080e1b;
+  color: white;
+  border: 1px solid #30445f;
+  border-radius: 8px;
+}
+
 </style>
 </head>
 
@@ -281,12 +329,44 @@ footer {
       </div>
     </div>
 
-    <div id="profileArea">
-      <h2>Minha conta</h2>
-      <p id="profileWelcome"></p>
-      <p id="profileUsername"></p>
-      <button onclick="logout()">Sair da conta</button>
-    </div>
+   
+<div id="profileArea">
+
+  <div class="profile-card">
+    <div class="profile-avatar" id="profileAvatar">N</div>
+
+    <h2 id="profileWelcome">Meu perfil</h2>
+    <p id="profileUsername"></p>
+    <p id="profileBio">Ainda não adicionou uma biografia.</p>
+
+    <button onclick="showEditProfile()">Editar perfil</button>
+    <button onclick="logout()" class="secondary-button">Sair da conta</button>
+  </div>
+
+  <div id="editProfileForm" style="display:none">
+    <h3>Editar meu perfil</h3>
+
+    <form id="profileForm">
+      <label>Nome de exibição</label>
+      <input id="editName" maxlength="80" required>
+
+      <label>Nome de usuário</label>
+      <input id="editUsername" minlength="3" maxlength="20"
+             pattern="[a-zA-Z0-9_]+" required>
+
+      <label>Biografia</label>
+      <textarea id="editBio" maxlength="250"
+        placeholder="Conte um pouco sobre você..."
+        style="width:100%;min-height:100px;padding:12px;background:#080e1b;color:white;border:1px solid #30445f;border-radius:8px;margin:8px 0 15px"></textarea>
+
+      <button type="submit">Salvar alterações</button>
+      <button type="button" class="secondary-button"
+        onclick="cancelEditProfile()">Cancelar</button>
+    </form>
+  </div>
+
+</div>
+
 
     <p id="authMessage" aria-live="polite"></p>
   </div>
@@ -364,10 +444,19 @@ if (
 // FUNÇÕES DA INTERFACE
 // ====================================
 
-function openAuth() {
+functifunction openAuth() {
   document.getElementById("authArea").style.display = "block";
+
+  if (currentUser) {
+    showProfile(currentUser);
+  } else {
+    showLogin();
+  }
+
   document.getElementById("authArea").scrollIntoView({
     behavior: "smooth"
+  });
+}
   });
 }
 
@@ -385,20 +474,71 @@ function showRegister() {
   clearMessage();
 }
 
-function showProfile(user) {
+
+let currentUser = null;
+let currentProfile = null;
+
+async function showProfile(user) {
+  if (!user || !supabaseClient) return;
+
+  currentUser = user;
+
   document.getElementById("loginForm").style.display = "none";
   document.getElementById("registerForm").style.display = "none";
   document.getElementById("profileArea").style.display = "block";
-
-  const metadata = user.user_metadata || {};
-
-  document.getElementById("profileWelcome").textContent =
-    "Olá, " + (metadata.display_name || user.email) + "!";
-
-  document.getElementById("profileUsername").textContent =
-    metadata.username ? "Usuário: @" + metadata.username : "";
+  document.getElementById("editProfileForm").style.display = "none";
 
   document.getElementById("headerButton").textContent = "Minha conta";
+
+  const { data, error } = await supabaseClient
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (error) {
+    showMessage("Erro ao carregar perfil: " + error.message, "error");
+    return;
+  }
+
+  if (!data) {
+    showMessage("Perfil ainda não encontrado.", "error");
+    return;
+  }
+
+  currentProfile = data;
+
+  document.getElementById("profileWelcome").textContent =
+    data.display_name || "Usuário NIxera";
+
+  document.getElementById("profileUsername").textContent =
+    data.username ? "@" + data.username : "";
+
+  document.getElementById("profileBio").textContent =
+    data.bio || "Ainda não adicionou uma biografia.";
+
+  document.getElementById("profileAvatar").textContent =
+    (data.display_name || "N").charAt(0).toUpperCase();
+
+  document.getElementById("editName").value =
+    data.display_name || "";
+
+  document.getElementById("editUsername").value =
+    data.username || "";
+
+  document.getElementById("editBio").value =
+    data.bio || "";
+}
+
+function showEditProfile() {
+  document.getElementById("editProfileForm").style.display = "block";
+  document.getElementById("editProfileForm").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function cancelEditProfile() {
+  document.getElementById("editProfileForm").style.display = "none";
 }
 
 function clearMessage() {
@@ -421,6 +561,71 @@ function checkConnection() {
   return true;
 }
 
+document.getElementById("profileForm")
+.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  if (!currentUser) return;
+
+  const displayName =
+    document.getElementById("editName").value.trim();
+
+  const username =
+    document.getElementById("editUsername").value.trim().toLowerCase();
+
+  const bio =
+    document.getElementById("editBio").value.trim();
+
+  if (!displayName) {
+    showMessage("Digite seu nome.", "error");
+    return;
+  }
+
+  if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+    showMessage("Nome de usuário inválido.", "error");
+    return;
+  }
+
+  const button = event.submitter;
+  button.disabled = true;
+  button.textContent = "Salvando...";
+
+  try {
+    const { data, error } = await supabaseClient
+      .from("profiles")
+      .update({
+        display_name: displayName,
+        username: username,
+        bio: bio
+      })
+      .eq("id", currentUser.id)
+      .select()
+      .single();
+
+    if (error) throw error;
+
+    currentProfile = data;
+
+    await showProfile(currentUser);
+
+    document.getElementById("editProfileForm").style.display = "none";
+
+    showMessage("Perfil atualizado com sucesso!", "success");
+
+  } catch (error) {
+    if (error.code === "23505") {
+      showMessage("Esse nome de usuário já está sendo utilizado.", "error");
+    } else {
+      showMessage("Erro ao salvar: " + error.message, "error");
+    }
+  } finally {
+    button.disabled = false;
+    button.textContent = "Salvar alterações";
+  }
+});
+
+  
 // ====================================
 // CADASTRO
 // ====================================
@@ -608,11 +813,16 @@ if (supabaseClient) {
 
   supabaseClient.auth.onAuthStateChange((event, session) => {
 
-    if (session) {
+    if (event === "SIGNED_IN" || event === "USER_UPDATED") {
       showProfile(session.user);
       connection.textContent = "Você está conectado à NIxera!";
-    } else if (event === "SIGNED_OUT") {
+    }
+
+    if (event === "SIGNED_OUT") {
+      currentUser = null;
+      currentProfile = null;
       showLogin();
+
       document.getElementById("headerButton").textContent = "Entrar";
       connection.textContent = "NIxera: você está desconectado.";
     }
@@ -621,7 +831,6 @@ if (supabaseClient) {
 
   loadSession();
 }
-
 </script>
 
 </body>
