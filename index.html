@@ -461,13 +461,13 @@ document.getElementById("registerFormElement")
     const { data, error } = await supabaseClient.auth.signUp({
       email,
       password,
-      options: {
-        emailRedirectTo: window.location.origin + window.location.pathname,
-        data: {
-          display_name: name,
-          username: username
-        }
-      }
+     options: {
+  emailRedirectTo: "https://city65.github.io/nixera/",
+  data: {
+    display_name: name,
+    username: username
+  }
+}
     });
 
     if (error) throw error;
