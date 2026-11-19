@@ -427,7 +427,7 @@ let supabaseClient;
 
 if (
   window.supabase &&
-  SUPABASE_KEY !== "COLE_SUA_CHAVE_PUBLICAVEL_AQUI" &&
+  SUPABASE_KEY !== "sb_publishable__fOCEETlkYEjvT5agdartg_5JGWREbZ" &&
   SUPABASE_KEY.trim() !== ""
 ) {
   supabaseClient = window.supabase.createClient(
@@ -444,7 +444,7 @@ if (
 // FUNÇÕES DA INTERFACE
 // ====================================
 
-functifunction openAuth() {
+function openAuth() {
   document.getElementById("authArea").style.display = "block";
 
   if (currentUser) {
@@ -455,8 +455,6 @@ functifunction openAuth() {
 
   document.getElementById("authArea").scrollIntoView({
     behavior: "smooth"
-  });
-}
   });
 }
 
