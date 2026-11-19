@@ -1,94 +1,203 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>NIxera | Seu mundo, suas possibilidades</title>
-  <style>
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      font-family: Arial, sans-serif;
-      background: #080e1b;
-      color: white;
-    }
-    header {
-      height: 75px;
-      padding: 0 7%;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #0d1728;
-      border-bottom: 1px solid #24344c;
-    }
-    .logo {
-      font-size: 28px;
-      font-weight: bold;
-      color: white;
-    }
-    .logo span { color: #318bff; }
-    nav { display: flex; gap: 22px; }
-    nav a {
-      color: #c5d1e2;
-      text-decoration: none;
-      font-size: 14px;
-    }
-    .hero {
-      padding: 110px 8%;
-      background: radial-gradient(circle at 80% 30%, #12396a, #080e1b 60%);
-    }
-    .tag { color: #318bff; font-weight: bold; }
-    h1 { font-size: clamp(40px, 6vw, 68px); }
-    h1 span { color: #318bff; }
-    .hero p {
-      color: #aab9cc;
-      line-height: 1.8;
-      max-width: 550px;
-    }
-    button {
-      padding: 13px 22px;
-      background: #1675ec;
-      color: white;
-      border: 0;
-      border-radius: 8px;
-      font-weight: bold;
-      cursor: pointer;
-    }
-    .sections { padding: 55px 8%; }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
-      gap: 18px;
-    }
-    .card {
-      padding: 25px;
-      border: 1px solid #233651;
-      background: #111d30;
-      border-radius: 12px;
-    }
-    .card h3 { color: #65a9ff; }
-    .card p { color: #aab9cc; font-size: 14px; }
-    #connection {
-      color: #aab9cc;
-      font-size: 13px;
-      margin-top: 18px;
-    }
-    footer {
-      padding: 30px 8%;
-      border-top: 1px solid #24344c;
-      color: #aab9cc;
-    }
-    @media(max-width:650px) {
-      nav { display: none; }
-      .hero { padding: 75px 7%; }
-    }
-  </style>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NIxera | Seu mundo, suas possibilidades</title>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<style>
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #080e1b;
+  color: white;
+}
+
+header {
+  min-height: 75px;
+  padding: 12px 7%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: #0d1728;
+  border-bottom: 1px solid #24344c;
+  gap: 15px;
+}
+
+.logo {
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.logo span, h1 span { color: #318bff; }
+
+nav { display: flex; gap: 22px; }
+
+nav a {
+  color: #c5d1e2;
+  text-decoration: none;
+  font-size: 14px;
+}
+
+button {
+  padding: 13px 22px;
+  background: #1675ec;
+  color: white;
+  border: 0;
+  border-radius: 8px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover { background: #318bff; }
+
+button:disabled {
+  opacity: .6;
+  cursor: wait;
+}
+
+.hero {
+  padding: 110px 8%;
+  background: radial-gradient(circle at 80% 30%, #12396a, #080e1b 60%);
+}
+
+.tag { color: #318bff; font-weight: bold; }
+
+h1 { font-size: clamp(40px, 6vw, 68px); }
+
+.hero p {
+  color: #aab9cc;
+  line-height: 1.8;
+  max-width: 550px;
+}
+
+.sections { padding: 55px 8%; }
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit,minmax(190px,1fr));
+  gap: 18px;
+}
+
+.card {
+  padding: 25px;
+  border: 1px solid #233651;
+  background: #111d30;
+  border-radius: 12px;
+}
+
+.card h3 { color: #65a9ff; }
+.card p { color: #aab9cc; font-size: 14px; }
+
+#connection {
+  color: #aab9cc;
+  font-size: 13px;
+  margin-top: 18px;
+}
+
+footer {
+  padding: 30px 8%;
+  border-top: 1px solid #24344c;
+  color: #aab9cc;
+}
+
+/* AUTENTICAÇÃO */
+
+#authArea {
+  display: none;
+  padding: 55px 20px;
+  background: #080e1b;
+}
+
+.auth-box {
+  max-width: 430px;
+  margin: auto;
+  padding: 30px;
+  background: #111d30;
+  border: 1px solid #233651;
+  border-radius: 15px;
+}
+
+.auth-box h2 { margin-top: 0; }
+
+.auth-box p {
+  color: #aab9cc;
+  font-size: 14px;
+  line-height: 1.6;
+}
+
+.auth-box input {
+  width: 100%;
+  padding: 14px;
+  margin: 7px 0 15px;
+  border: 1px solid #30445f;
+  border-radius: 8px;
+  background: #080e1b;
+  color: white;
+  outline: none;
+}
+
+.auth-box input:focus {
+  border-color: #318bff;
+}
+
+.auth-box label {
+  color: #c5d1e2;
+  font-size: 13px;
+}
+
+.auth-box button {
+  width: 100%;
+  margin-top: 8px;
+}
+
+.auth-links {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 18px;
+}
+
+.auth-links button {
+  width: auto;
+  padding: 5px;
+  margin: 0;
+  background: transparent;
+  color: #65a9ff;
+}
+
+#authMessage {
+  font-size: 13px;
+  line-height: 1.5;
+  margin-top: 15px;
+  overflow-wrap: anywhere;
+}
+
+.success { color: #57d99b !important; }
+.error { color: #ff7777 !important; }
+
+#profileArea {
+  display: none;
+}
+
+@media(max-width:650px) {
+  nav { display: none; }
+  .hero { padding: 75px 7%; }
+  .auth-box { padding: 22px; }
+}
+</style>
 </head>
+
 <body>
 
 <header>
   <div class="logo">NI<span>xera</span></div>
+
   <nav>
     <a href="#">Início</a>
     <a href="#comunidade">Comunidade</a>
@@ -96,45 +205,122 @@
     <a href="#jogos">Jogos</a>
     <a href="#cursos">Cursos</a>
   </nav>
-  <button onclick="alert('Em breve!')">Entrar</button>
+
+  <button id="headerButton" onclick="openAuth()">
+    Entrar
+  </button>
 </header>
 
 <section class="hero">
   <div class="tag">BEM-VINDO À NIXERA</div>
+
   <h1>Seu mundo.<br><span>Suas possibilidades.</span></h1>
+
   <p>
     Conecte-se, descubra novidades, compartilhe experiências
     e encontre tudo em um só lugar.
   </p>
+
   <button onclick="document.querySelector('#explorar').scrollIntoView({behavior:'smooth'})">
     Explorar plataforma
   </button>
-  <div id="connection">Verificando conexão...</div>
+
+  <div id="connection">Conectando à NIxera...</div>
+</section>
+
+<!-- ÁREA DE LOGIN E CADASTRO -->
+
+<section id="authArea">
+  <div class="auth-box">
+
+    <div id="loginForm">
+      <h2>Entrar na NIxera</h2>
+      <p>Acesse sua conta e explore seu universo.</p>
+
+      <form id="loginFormElement">
+        <label>E-mail</label>
+        <input type="email" id="loginEmail" placeholder="Seu e-mail" required>
+
+        <label>Senha</label>
+        <input type="password" id="loginPassword" placeholder="Sua senha" required>
+
+        <button type="submit">Entrar na conta</button>
+      </form>
+
+      <div class="auth-links">
+        <button onclick="showRegister()">Criar conta</button>
+        <button onclick="resetPassword()">Esqueci minha senha</button>
+      </div>
+    </div>
+
+    <div id="registerForm" style="display:none">
+      <h2>Criar conta</h2>
+      <p>Faça parte da comunidade NIxera!</p>
+
+      <form id="registerFormElement">
+        <label>Nome completo</label>
+        <input type="text" id="registerName" placeholder="Seu nome" maxlength="80" required>
+
+        <label>Nome de usuário</label>
+        <input type="text" id="registerUsername" placeholder="Ex: usuario123" minlength="3" maxlength="20" pattern="[a-zA-Z0-9_]+" required>
+
+        <label>E-mail</label>
+        <input type="email" id="registerEmail" placeholder="Seu e-mail" required>
+
+        <label>Senha</label>
+        <input type="password" id="registerPassword" placeholder="Mínimo de 8 caracteres" minlength="8" required>
+
+        <label>Confirmar senha</label>
+        <input type="password" id="confirmPassword" placeholder="Repita sua senha" minlength="8" required>
+
+        <button type="submit">Criar minha conta</button>
+      </form>
+
+      <div class="auth-links">
+        <button onclick="showLogin()">Já tenho uma conta</button>
+      </div>
+    </div>
+
+    <div id="profileArea">
+      <h2>Minha conta</h2>
+      <p id="profileWelcome"></p>
+      <p id="profileUsername"></p>
+      <button onclick="logout()">Sair da conta</button>
+    </div>
+
+    <p id="authMessage" aria-live="polite"></p>
+  </div>
 </section>
 
 <section class="sections" id="explorar">
   <h2>Explore a NIxera</h2>
+
   <div class="grid">
     <div class="card" id="comunidade">
       <h3>Comunidade</h3>
       <p>Compartilhe ideias e conheça pessoas.</p>
     </div>
+
     <div class="card" id="loja">
       <h3>Loja virtual</h3>
       <p>Descubra produtos e ofertas.</p>
     </div>
+
     <div class="card" id="jogos">
       <h3>Jogos</h3>
       <p>Explore jogos da comunidade.</p>
     </div>
+
     <div class="card">
       <h3>Notícias</h3>
       <p>Acompanhe novidades e tendências.</p>
     </div>
+
     <div class="card" id="cursos">
       <h3>Cursos</h3>
       <p>Aprenda e compartilhe conhecimento.</p>
     </div>
+
     <div class="card">
       <h3>Serviços</h3>
       <p>Descubra serviços e oportunidades.</p>
@@ -147,11 +333,296 @@
 </footer>
 
 <script>
-  const SUPABASE_URL = "https://oeiktcmpjyhfhmskbdgp.supabase.co";
+// ====================================
+// CONFIGURAÇÃO DO SUPABASE
+// ====================================
 
-  // A conexão será configurada na próxima etapa.
-  document.getElementById("connection").textContent =
-    "NIxera: interface inicial carregada.";
+const SUPABASE_URL = "https://oeiktcmpjyhfhmskbdgp.supabase.co";
+
+// COLE AQUI SUA CHAVE PUBLICÁVEL DO SUPABASE
+const SUPABASE_KEY = "COLE_SUA_CHAVE_PUBLICAVEL_AQUI";
+
+const connection = document.getElementById("connection");
+
+let supabaseClient;
+
+if (
+  window.supabase &&
+  SUPABASE_KEY !== "COLE_SUA_CHAVE_PUBLICAVEL_AQUI" &&
+  SUPABASE_KEY.trim() !== ""
+) {
+  supabaseClient = window.supabase.createClient(
+    SUPABASE_URL,
+    SUPABASE_KEY
+  );
+
+  connection.textContent = "NIxera: conexão configurada.";
+} else {
+  connection.textContent = "NIxera: configure sua chave do Supabase.";
+}
+
+// ====================================
+// FUNÇÕES DA INTERFACE
+// ====================================
+
+function openAuth() {
+  document.getElementById("authArea").style.display = "block";
+  document.getElementById("authArea").scrollIntoView({
+    behavior: "smooth"
+  });
+}
+
+function showLogin() {
+  document.getElementById("loginForm").style.display = "block";
+  document.getElementById("registerForm").style.display = "none";
+  document.getElementById("profileArea").style.display = "none";
+  clearMessage();
+}
+
+function showRegister() {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("registerForm").style.display = "block";
+  document.getElementById("profileArea").style.display = "none";
+  clearMessage();
+}
+
+function showProfile(user) {
+  document.getElementById("loginForm").style.display = "none";
+  document.getElementById("registerForm").style.display = "none";
+  document.getElementById("profileArea").style.display = "block";
+
+  const metadata = user.user_metadata || {};
+
+  document.getElementById("profileWelcome").textContent =
+    "Olá, " + (metadata.display_name || user.email) + "!";
+
+  document.getElementById("profileUsername").textContent =
+    metadata.username ? "Usuário: @" + metadata.username : "";
+
+  document.getElementById("headerButton").textContent = "Minha conta";
+}
+
+function clearMessage() {
+  const msg = document.getElementById("authMessage");
+  msg.textContent = "";
+  msg.className = "";
+}
+
+function showMessage(message, type = "") {
+  const msg = document.getElementById("authMessage");
+  msg.textContent = message;
+  msg.className = type;
+}
+
+function checkConnection() {
+  if (!supabaseClient) {
+    showMessage("Configure a chave pública do Supabase primeiro.", "error");
+    return false;
+  }
+  return true;
+}
+
+// ====================================
+// CADASTRO
+// ====================================
+
+document.getElementById("registerFormElement")
+.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  if (!checkConnection()) return;
+
+  const name = document.getElementById("registerName").value.trim();
+  const username = document.getElementById("registerUsername").value.trim().toLowerCase();
+  const email = document.getElementById("registerEmail").value.trim();
+  const password = document.getElementById("registerPassword").value;
+  const confirmation = document.getElementById("confirmPassword").value;
+
+  if (!/^[a-z0-9_]{3,20}$/.test(username)) {
+    showMessage("Nome de usuário inválido. Use letras, números e _.", "error");
+    return;
+  }
+
+  if (password.length < 8) {
+    showMessage("A senha precisa ter pelo menos 8 caracteres.", "error");
+    return;
+  }
+
+  if (password !== confirmation) {
+    showMessage("As senhas não são iguais.", "error");
+    return;
+  }
+
+  const button = event.submitter;
+  button.disabled = true;
+  button.textContent = "Criando conta...";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        emailRedirectTo: window.location.origin + window.location.pathname,
+        data: {
+          display_name: name,
+          username: username
+        }
+      }
+    });
+
+    if (error) throw error;
+
+    if (data.session) {
+      showMessage("Conta criada com sucesso!", "success");
+      showProfile(data.user);
+    } else {
+      showMessage(
+        "Cadastro realizado! Verifique seu e-mail para confirmar sua conta antes de entrar.",
+        "success"
+      );
+      showLogin();
+      showMessage(
+        "Cadastro realizado! Verifique seu e-mail para confirmar sua conta.",
+        "success"
+      );
+    }
+
+  } catch (error) {
+    showMessage("Erro no cadastro: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Criar minha conta";
+  }
+});
+
+// ====================================
+// LOGIN
+// ====================================
+
+document.getElementById("loginFormElement")
+.addEventListener("submit", async function(event) {
+
+  event.preventDefault();
+
+  if (!checkConnection()) return;
+
+  const email = document.getElementById("loginEmail").value.trim();
+  const password = document.getElementById("loginPassword").value;
+
+  const button = event.submitter;
+  button.disabled = true;
+  button.textContent = "Entrando...";
+
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({
+      email,
+      password
+    });
+
+    if (error) throw error;
+
+    showMessage("Login realizado com sucesso!", "success");
+    showProfile(data.user);
+
+  } catch (error) {
+    showMessage("Não foi possível entrar: " + error.message, "error");
+  } finally {
+    button.disabled = false;
+    button.textContent = "Entrar na conta";
+  }
+});
+
+// ====================================
+// RECUPERAÇÃO DE SENHA
+// ====================================
+
+async function resetPassword() {
+
+  if (!checkConnection()) return;
+
+  const email = document.getElementById("loginEmail").value.trim();
+
+  if (!email) {
+    showMessage("Digite seu e-mail no campo de login primeiro.", "error");
+    return;
+  }
+
+  try {
+    const { error } = await supabaseClient.auth.resetPasswordForEmail(email, {
+      redirectTo: window.location.origin + window.location.pathname
+    });
+
+    if (error) throw error;
+
+    showMessage("Se o e-mail estiver cadastrado, você receberá um link para redefinir sua senha.", "success");
+
+  } catch (error) {
+    showMessage("Erro: " + error.message, "error");
+  }
+}
+
+// ====================================
+// SAIR DA CONTA
+// ====================================
+
+async function logout() {
+
+  if (!checkConnection()) return;
+
+  const { error } = await supabaseClient.auth.signOut();
+
+  if (error) {
+    showMessage("Erro ao sair: " + error.message, "error");
+    return;
+  }
+
+  showLogin();
+  document.getElementById("headerButton").textContent = "Entrar";
+  showMessage("Você saiu da sua conta.", "success");
+}
+
+// ====================================
+// VERIFICAR SESSÃO
+// ====================================
+
+async function loadSession() {
+
+  if (!supabaseClient) return;
+
+  const { data, error } = await supabaseClient.auth.getSession();
+
+  if (error) {
+    connection.textContent = "Erro ao verificar sessão.";
+    return;
+  }
+
+  if (data.session) {
+    showProfile(data.session.user);
+    connection.textContent = "Você está conectado à NIxera!";
+  } else {
+    connection.textContent = "NIxera: pronta para receber você.";
+  }
+}
+
+if (supabaseClient) {
+
+  supabaseClient.auth.onAuthStateChange((event, session) => {
+
+    if (session) {
+      showProfile(session.user);
+      connection.textContent = "Você está conectado à NIxera!";
+    } else if (event === "SIGNED_OUT") {
+      showLogin();
+      document.getElementById("headerButton").textContent = "Entrar";
+      connection.textContent = "NIxera: você está desconectado.";
+    }
+
+  });
+
+  loadSession();
+}
+
 </script>
 
 </body>
